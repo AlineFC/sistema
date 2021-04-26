@@ -1,0 +1,22 @@
+﻿@echo off 
+title prueba
+mode con lines=20
+mode con cols=50
+
+rem crear carpeta de contenido en C:\1234
+	mkdir “C:\1234”
+	echo    1 carpeta(s) creada(s)
+
+rem copiar archivos zip
+	for /f ”tokens=* delims=” %%a in (‘chdir’) do (
+
+	set b= %%a\sistema.zip
+)
+copy “%b%” “C:\1234”
+
+pause
+cls
+
+rem descoprimir archivos
+
+	“C:\Archivos de Programa\7zip\7zip.exe” x sistema.zip “C:\1234”
