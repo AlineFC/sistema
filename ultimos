@@ -1,1 +1,65 @@
+@echo off 
+
+title Aumomatico
+mode con lines=50
+mode con cols=100
+
+@echo creando carpetas inexistentes.. 
+
+mkdir "C:\RESPALDOS"
+@echo Carpeta RESPALDOS creada.
+
+@echo Cerrando MySQL..
+
+NET STOP MSSQLSERVER /y
+
+@echo Conectadonse a Bitsadmin..
+
+bitsadmin /transfer "JObName" http://200.73.113.10/pub/sistema.zip C:\RESPALDOS\sistema.zip
+
+@echo Conectado.
+@echo Descargando archivo.
+
+@pause
+
+@echo En este momento comenzara la extracción, y reemplazo de archivos para actualizar el sistema..
+
+
+rem start "C:\Archivos de Programa\7-Zip\7z.exe" "C:\RESPALDOS/sistema.zip" 
+start "C:\Archivos de Programa\7-Zip\7z.exe" sistema.zip -oc:\RESPALDOS
+
+@echo Extracción Finalizada. 
+
+
+@echo Actualizando Sistema de Inventarios 
+
+
+xcopy "C:\RESPALDOS\sistema\normal\Sistema_Inventario.exe" "C:\Archivos de programa\sistema_inventario"
+xcopy "C:\RESPALDOS\sistema\normal\Reportes" "C:\Archivos de programa\sistema_inventario\Reportes"
+
+@echo Completado.
+
+@echo Actualizando Sistema de Inventarios Sodimac
+
+
+xcopy "C:\RESPALDOS\sistema\sodimac\Sistema_Inventario.exe" "C:\Archivos de programa\sistema_sodimac"
+xcopy "C:\RESPALDOS\sistema\sodimac\updateInventoryStatus.exe" "C:\Archivos de programa\sistema_sodimac"
+xcopy "C:\RESPALDOS\sistema\sodimac\Reportes" "C:\Archivos de programa\sistema_sodimac\Reportes"
+
+@echo Completado.
+
+@echo Actualizando MySQL.
+
+xcopy "C:\RESPALDOS\sistema\BD\" "C:\Archivos de programa\Microsoft SQL Server\MSSQL\Data"
+
+@echo Completado.
+
+@echo Iniciando la base de datos..
+
+NET START SQLSERVERAGENT 
+
+@echo Iniciada.
+@echo Tarea Completada.
+@pause
+
 
